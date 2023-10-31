@@ -11,8 +11,12 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  name     String    @unique
+  password String    @db.VarChar(200)
+
+  @@map("users")
 }
 
