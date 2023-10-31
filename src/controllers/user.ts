@@ -1,13 +1,15 @@
 import express, { Request, Response } from 'express';
 import * as UserService from '../services/UserService';
 import * as UserRepository from '../repositories/UserRepository';
+import * as UserValidation from '../validation/UserValidation';
+
 const Router = express.Router();
 
 // 회원가입
-Router.post('/', UserService.SignUp);
+Router.post('/', UserValidation.SignUpRequestValid, UserService.SignUp);
 
 // 로그인
-Router.post('/login', UserService.LogIn);
+Router.post('/login', UserValidation.LoginRequestValid, UserService.LogIn);
 
 // 로그아웃
 Router.get('/logout', UserService.LogOut);

@@ -10,6 +10,14 @@ export const SignUp = async (
   next: NextFunction
 ) => {
   try {
+    const checkEmail = await UserRepository.findByEmail(req.body.email);
+    if (checkEmail) {
+      return res.send(resFormat.fail(409, '이미 존재하는 이메일입니다.'));
+    }
+    const checkName = await UserRepository.findByName(req.body.name);
+    if (checkName) {
+      return res.send(resFormat.fail(409, '이미 존해하는 닉네임입니다.'));
+    }
     const data = req.body;
     data.password = await bcrypt.hash(req.body.password, 10);
     const response = await UserRepository.create(data);
