@@ -2,7 +2,7 @@ import { check } from 'express-validator';
 import validationFunction from './validationFunction';
 import { Request, Response, NextFunction } from 'express';
 
-//email nicnname password
+//email name password
 export const SignUpRequestValid = async (
   req: Request,
   res: Response,
