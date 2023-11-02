@@ -11,12 +11,36 @@ datasource db {
 }
 
 model User {
-  
   id       Int       @id @default(autoincrement())
   email    String    @unique
   name     String    @unique
   password String    @db.VarChar(200)
-
+  createdAt DateTime @default(now())
+  Book      Book[]
   @@map("users")
 }
 
+model Book {
+  id          Int @id @default(autoincrement())
+  title       String @db.VarChar(200)
+  introduce   String
+  category    String
+  cycle       String
+  author      User @relation(fields: [authorId], references: [id])
+  authorId    Int
+  item        Book_Item[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@map("books")
+}
+
+model Book_Item {
+  id      Int @id @default(autoincrement())
+  title   String
+  content String
+  book    Book @relation(fields: [bookId], references: [id]) 
+  bookId  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@map("book_items")
+}

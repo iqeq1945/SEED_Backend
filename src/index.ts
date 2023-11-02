@@ -7,11 +7,12 @@ import express, {
 } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import UserController from './controllers/user';
 import session from 'express-session';
 import passport from 'passport';
 import passportConfig from './config/passport';
 import dotenv from 'dotenv';
+import UserController from './controllers/user';
+import BookController from './controllers/book';
 
 dotenv.config();
 passportConfig(passport);
@@ -43,6 +44,7 @@ app.use(morgan('dev'));
 
 // Routes
 app.use('/users', UserController);
+app.use('/books', BookController);
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);

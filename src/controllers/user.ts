@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import * as UserService from '../services/UserService';
 import * as UserRepository from '../repositories/UserRepository';
 import * as UserValidation from '../validation/UserValidation';
+import * as UserHandler from '../middlewares/UserHandler';
 
 const Router = express.Router();
 
@@ -9,10 +10,15 @@ const Router = express.Router();
 Router.post('/', UserValidation.SignUpRequestValid, UserService.SignUp);
 
 // 로그인
-Router.post('/login', UserValidation.LoginRequestValid, UserService.LogIn);
+Router.post(
+  '/login',
+  UserHandler.isNotLoggedIn,
+  UserValidation.LoginRequestValid,
+  UserService.LogIn
+);
 
 // 로그아웃
-Router.get('/logout', UserService.LogOut);
+Router.get('/logout', UserHandler.isLoggedIn, UserService.LogOut);
 
 // 회원 정보 가져오기
 Router.get('/:id', async function (req: Request, res: Response) {
