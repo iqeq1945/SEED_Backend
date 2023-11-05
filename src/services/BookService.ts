@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import resFormat from '../utils/resFormat';
-import * as BookRespository from '../repositories/BookRepostiory';
+import * as BookRepository from '../repositories/BookRepostiory';
 
 export const CreateBook = async (
   req: Request,
@@ -11,7 +11,7 @@ export const CreateBook = async (
     if (req.body.authorId != req.user.id) {
       return res.send(resFormat.fail(401, '로그인된 유저와 같지 않습니다.'));
     }
-    const response = await BookRespository.create(req.body);
+    const response = await BookRepository.create(req.body);
     if (!response) {
       return res.send(resFormat.fail(400, '실패'));
     }
@@ -30,11 +30,7 @@ export const UpdateBook = async (
   try {
     const { id, ...data } = req.body;
     console.log(id, data);
-    const checkAuthor = await BookRespository.findById(req.body.id);
-    if (checkAuthor!.author.id != req.user.id) {
-      return res.send(resFormat.fail(401, '권한을 갖고 있지 않음'));
-    }
-    const response = await BookRespository.update(id, data);
+    const response = await BookRepository.update(id, data);
     if (!response) {
       return res.send(resFormat.fail(400, '실패'));
     }
@@ -51,15 +47,30 @@ export const DeleteBook = async (
   next: NextFunction
 ) => {
   try {
-    const checkAuthor = await BookRespository.findById(req.body.id);
-    if (checkAuthor!.author.id != req.user.id) {
-      return res.send(resFormat.fail(401, '권한을 갖고 있지 않음'));
-    }
-    const response = await BookRespository.erase(req.body.id);
+    const response = await BookRepository.erase(req.body.id);
     if (!response) {
       return res.send(resFormat.fail(400, '실패'));
     }
     return res.send(resFormat.successData(200, 'Book 삭제 성공', response));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const ReadBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await BookRepository.findById(req.body.id);
+    if (!response) {
+      return res.send(resFormat.fail(400, '정보 가져오기 실패'));
+    }
+    return res.send(
+      resFormat.successData(200, 'Book 정보 가져오기 성공', response)
+    );
   } catch (err) {
     console.log(err);
     next(err);

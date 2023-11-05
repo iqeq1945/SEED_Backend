@@ -2,16 +2,16 @@ import { check } from 'express-validator';
 import validationFunction from './validationFunction';
 import { Request, Response, NextFunction } from 'express';
 
-// authorId
+// bookId
 
-export const AuthorRequestValid = async (
+export const BookRequestValid = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  await check('authorId')
+  await check('bookId')
     .exists()
-    .withMessage('authorId가 없습니다.')
+    .withMessage('bookId가 없습니다.')
     .bail()
     .isNumeric()
     .withMessage('number 형식이어야 합니다.')
@@ -19,7 +19,7 @@ export const AuthorRequestValid = async (
   validationFunction(req, res, next);
 };
 
-// title, cycle, category, authorId, introduce
+// title, content
 
 export const CreateRequestValid = async (
   req: Request,
@@ -33,28 +33,14 @@ export const CreateRequestValid = async (
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
-  await check('cycle')
+  await check('content')
     .exists()
-    .withMessage('cycle이 없습니다.')
+    .withMessage('content이 없습니다.')
     .bail()
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
-  await check('introduce')
-    .exists()
-    .withMessage('introduce이 없습니다.')
-    .bail()
-    .isString()
-    .withMessage('string 형식이어야 합니다.')
-    .run(req);
-  await check('category')
-    .exists()
-    .withMessage('category이 없습니다.')
-    .bail()
-    .isString()
-    .withMessage('string 형식이어야 합니다.')
-    .run(req);
-  AuthorRequestValid(req, res, next);
+  BookRequestValid(req, res, next);
 };
 
 // id
@@ -71,7 +57,7 @@ export const DeleteRequestValid = async (
     .isNumeric()
     .withMessage('number 형식이어야 합니다.')
     .run(req);
-  validationFunction(req, res, next);
+  BookRequestValid(req, res, next);
 };
 
 export const ReadRequestValid = DeleteRequestValid;
@@ -90,25 +76,12 @@ export const UpdateRequestValid = async (
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
-  await check('cycle')
+  await check('content')
     .exists()
-    .withMessage('cycle이 없습니다.')
+    .withMessage('content이 없습니다.')
     .bail()
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
-  await check('category')
-    .exists()
-    .withMessage('category이 없습니다.')
-    .bail()
-    .isString()
-    .withMessage('string 형식이어야 합니다.')
-    .run(req);
-  await check('introduce')
-    .exists()
-    .withMessage('introduce이 없습니다.')
-    .bail()
-    .isString()
-    .withMessage('string 형식이어야 합니다.');
   DeleteRequestValid(req, res, next);
 };

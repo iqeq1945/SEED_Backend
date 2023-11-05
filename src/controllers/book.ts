@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import * as BookService from '../services/BookService';
 import * as BookValidation from '../validation/BookValidation';
 import * as UserHandler from '../middlewares/UserHandler';
+import * as BookHandler from '../middlewares/BookHandler';
 
 const Router = express.Router();
 
@@ -18,6 +19,7 @@ Router.post(
 Router.post(
   '/delete',
   UserHandler.isLoggedIn,
+  BookHandler.checkAuthor,
   BookValidation.DeleteRequestValid,
   BookService.DeleteBook
 );
@@ -27,7 +29,18 @@ Router.post(
 Router.patch(
   '/update',
   UserHandler.isLoggedIn,
+  BookHandler.checkAuthor,
   BookValidation.UpdateRequestValid,
   BookService.UpdateBook
 );
+
+// Book 정보 가져오기
+
+Router.get('/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
+
+// Book 권한 확인 테스트
+
+Router.post('/check', BookHandler.checkAuthor, function (req, res) {
+  return res.send('성공');
+});
 export default Router;

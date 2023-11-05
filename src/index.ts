@@ -13,6 +13,7 @@ import passportConfig from './config/passport';
 import dotenv from 'dotenv';
 import UserController from './controllers/user';
 import BookController from './controllers/book';
+import BookItemController from './controllers/bookItem';
 
 dotenv.config();
 passportConfig(passport);
@@ -45,6 +46,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/users', UserController);
 app.use('/books', BookController);
+app.use('/book-items', BookItemController);
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);

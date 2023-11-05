@@ -32,6 +32,7 @@ export const findById = async (id: number) => {
             email: true,
           },
         },
+        item: true,
       },
     });
   } catch (err) {
