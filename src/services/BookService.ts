@@ -76,3 +76,27 @@ export const ReadBook = async (
     next(err);
   }
 };
+
+export const GetListBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const keyword = req.params.keyword as string;
+    const category = req.params.category as string;
+    if (keyword) {
+      const response = await BookRepository.getByKeyword(keyword);
+      if (!response) return res.send(resFormat.fail(400, '실패'));
+      return res.send(resFormat.successData(200, '검색 성공', response));
+    }
+    if (category) {
+      const response = await BookRepository.getByCategory(category);
+      if (!response) return res.send(resFormat.fail(400, '실패'));
+      return res.send(resFormat.successData(200, '검색 성공', response));
+    }
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};

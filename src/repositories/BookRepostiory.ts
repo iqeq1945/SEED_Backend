@@ -63,3 +63,54 @@ export const update = async (id: number, data: BOOK_UPDATE) => {
     console.log(err);
   }
 };
+
+export const getByKeyword = async (keyword: string) => {
+  try {
+    return await prisma.book.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: keyword,
+            },
+          },
+          {
+            author: {
+              name: {
+                contains: keyword,
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getByCategory = async (category: string) => {
+  try {
+    return await prisma.book.findMany({
+      where: {
+        category: category,
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};

@@ -109,6 +109,41 @@ export const UpdateRequestValid = async (
     .withMessage('introduce이 없습니다.')
     .bail()
     .isString()
-    .withMessage('string 형식이어야 합니다.');
+    .withMessage('string 형식이어야 합니다.')
+    .run(req);
   DeleteRequestValid(req, res, next);
+};
+
+// Get By Keywrod
+
+export const KeywrodRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('keyword')
+    .exists()
+    .withMessage('keyword가 없습니다.')
+    .bail()
+    .isString()
+    .withMessage('string 형식이어야 합니다.')
+    .run(req);
+  validationFunction(req, res, next);
+};
+
+// Get By Category
+
+export const CategoryRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('category')
+    .exists()
+    .withMessage('category가 없습니다.')
+    .bail()
+    .isString()
+    .withMessage('string 형식이어야 합니다.')
+    .run(req);
+  validationFunction(req, res, next);
 };

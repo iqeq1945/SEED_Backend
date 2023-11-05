@@ -36,7 +36,23 @@ Router.patch(
 
 // Book 정보 가져오기
 
-Router.get('/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
+Router.get('/info/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
+
+// Book List keyword통해 가져오기
+
+Router.get(
+  '/search/:keyword',
+  BookValidation.KeywrodRequestValid,
+  BookService.GetListBook
+);
+
+// Book List category에 맞게 가져오기
+
+Router.get(
+  '/category/:category',
+  BookValidation.CategoryRequestValid,
+  BookService.GetListBook
+);
 
 // Book 권한 확인 테스트
 
