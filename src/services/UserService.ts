@@ -21,6 +21,9 @@ export const SignUp = async (
     const data = req.body;
     data.password = await bcrypt.hash(req.body.password, 10);
     const response = await UserRepository.create(data);
+    if (!response) {
+      return res.send(resFormat.fail(400, '실패'));
+    }
     return res.send(resFormat.successData(200, '회원가입 성공', response));
   } catch (err) {
     console.error(err);
