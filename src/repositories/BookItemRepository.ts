@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Book_Item, PrismaClient } from '@prisma/client';
 
 const prisma: PrismaClient = new PrismaClient();
 
@@ -8,6 +8,7 @@ export interface BOOK_ITEM_INIT {
   content?: string;
   bookId?: number;
 }
+
 export interface BOOK_ITEM_UPDATE extends BOOK_ITEM_INIT {
   id: number;
 }
@@ -16,6 +17,10 @@ export interface BOOK_ITEM extends BOOK_ITEM_INIT {
   title: string;
   content: string;
   bookId: number;
+}
+
+export interface BOOK_ITEM_OPEN extends BOOK_ITEM_INIT {
+  id: number;
 }
 
 export const findById = async (id: number) => {
@@ -47,6 +52,14 @@ export const erase = async (id: number) => {
 };
 
 export const update = async (id: number, data: BOOK_ITEM_UPDATE) => {
+  try {
+    return await prisma.book_Item.update({ where: { id: id }, data });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const open = async (id: number, data: BOOK_ITEM_OPEN) => {
   try {
     return await prisma.book_Item.update({ where: { id: id }, data });
   } catch (err) {

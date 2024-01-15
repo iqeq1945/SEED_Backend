@@ -15,7 +15,6 @@ Router.post(
 );
 
 // Book 삭제
-
 Router.post(
   '/delete',
   UserHandler.isLoggedIn,
@@ -25,7 +24,6 @@ Router.post(
 );
 
 // Book 수정
-
 Router.patch(
   '/update',
   UserHandler.isLoggedIn,
@@ -35,11 +33,9 @@ Router.patch(
 );
 
 // Book 정보 가져오기
-
 Router.get('/info/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
 
 // Book List keyword통해 가져오기
-
 Router.get(
   '/search/:keyword',
   BookValidation.KeywrodRequestValid,
@@ -47,7 +43,6 @@ Router.get(
 );
 
 // Book List category에 맞게 가져오기
-
 Router.get(
   '/category/:category',
   BookValidation.CategoryRequestValid,
@@ -55,8 +50,8 @@ Router.get(
 );
 
 // Book 권한 확인 테스트
-
 Router.post('/check', BookHandler.checkAuthor, function (req, res) {
   return res.send('성공');
 });
+
 export default Router;

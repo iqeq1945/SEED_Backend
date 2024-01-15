@@ -17,6 +17,14 @@ export const isNotLoggedIn = (
   if (!req.isAuthenticated()) {
     next();
   } else {
-    res.status(401).send(resFormat.fail(403, '이미 로그인된 유저입니다.'));
+    res.status(403).send(resFormat.fail(403, '이미 로그인된 유저입니다.'));
+  }
+};
+
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (req.user.status) {
+    next();
+  } else {
+    res.status(401).send(resFormat.fail(401, '권한이 없는 유저입니다.'));
   }
 };

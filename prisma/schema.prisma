@@ -16,6 +16,7 @@ model User {
   name     String    @unique
   password String    @db.VarChar(200)
   createdAt DateTime @default(now())
+  status    Boolean @default(false)
   Book      Book[]
   @@map("users")
 }
