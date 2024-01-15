@@ -8,12 +8,17 @@ export interface userType {
   name: string;
   password: string;
 }
-
+export type reqUserType = {
+  id: number;
+  email: string;
+  name: string;
+  status: boolean;
+};
 export const findById = async (id: number) => {
   try {
     return await prisma.user.findUnique({
       where: { id: id },
-      select: { id: true, name: true },
+      select: { id: true, name: true, email: true, status: true },
     });
   } catch (err) {
     console.log(err);

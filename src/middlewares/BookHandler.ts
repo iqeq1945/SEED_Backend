@@ -13,7 +13,7 @@ export const checkAuthor = async (
     if (!response) {
       return res.send(resFormat.fail(403, '존재하지 않는 정보입니다.'));
     }
-    if (response!.author.id != req.user.id) {
+    if (response!.author.id != req.user!.id) {
       return res.send(resFormat.fail(401, '권한을 갖고 있지 않음'));
     }
     next();

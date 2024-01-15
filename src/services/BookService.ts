@@ -8,7 +8,7 @@ export const CreateBook = async (
   next: NextFunction
 ) => {
   try {
-    if (req.body.authorId != req.user.id) {
+    if (req.body.authorId != req.user!.id) {
       return res.send(resFormat.fail(401, '로그인된 유저와 같지 않습니다.'));
     }
     const response = await BookRepository.create(req.body);

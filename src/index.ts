@@ -11,6 +11,8 @@ import session from 'express-session';
 import passport from 'passport';
 import passportConfig from './config/passport';
 import dotenv from 'dotenv';
+import { redisCli } from './config/redis';
+import RedisStore from 'connect-redis';
 import UserController from './controllers/user';
 import BookController from './controllers/book';
 import BookItemController from './controllers/bookItem';
@@ -36,6 +38,7 @@ app.use(
       httpOnly: true,
       secure: false,
     },
+    store: new RedisStore({ client: redisCli, prefix: 'session:' }),
   })
 );
 app.use(passport.initialize());
