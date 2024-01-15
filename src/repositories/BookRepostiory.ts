@@ -114,3 +114,41 @@ export const getByCategory = async (category: string) => {
     console.log(err);
   }
 };
+
+export const getList = async (
+  keyword: string | undefined,
+  category: string | undefined
+) => {
+  try {
+    return await prisma.book.findMany({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: keyword,
+            },
+          },
+          {
+            author: {
+              name: {
+                contains: keyword,
+              },
+            },
+          },
+          {
+            category,
+          },
+        ],
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
