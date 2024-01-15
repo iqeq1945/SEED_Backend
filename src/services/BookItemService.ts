@@ -48,7 +48,28 @@ export const DeleteItem = async (
     if (!response) {
       return res.send(resFormat.fail(400, '실패'));
     }
-    return res.send(resFormat.successData(200, 'Book 삭제 성공', response));
+    return res.send(
+      resFormat.successData(200, 'Book Item 삭제 성공', response)
+    );
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const OpenItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await BookItemRepository.open(req.body.id, req.body.open);
+    if (!response) {
+      return res.send(resFormat.fail(400, '실패'));
+    }
+    return res.send(
+      resFormat.successData(200, 'Book Item Open 상태 수정 성공', response)
+    );
   } catch (err) {
     console.log(err);
     next(err);

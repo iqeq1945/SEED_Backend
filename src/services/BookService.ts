@@ -83,8 +83,12 @@ export const GetListBook = async (
   next: NextFunction
 ) => {
   try {
-    const keyword = req.params.keyword as string;
-    const category = req.params.category as string;
+    const keyword = (req.params.keyword as string)
+      ? (req.params.keyword as string)
+      : undefined;
+    const category = (req.params.category as string)
+      ? (req.params.category as string)
+      : undefined;
     if (keyword) {
       const response = await BookRepository.getByKeyword(keyword);
       if (!response) return res.send(resFormat.fail(400, '실패'));

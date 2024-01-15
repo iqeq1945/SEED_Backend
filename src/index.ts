@@ -24,7 +24,7 @@ const port: number = 3000;
 // Other settings
 app.use(cors());
 app.use(json());
-app.use(urlencoded({ extended: true }));
+app.use(urlencoded({ extended: false }));
 
 // Passport settings
 app.use(
