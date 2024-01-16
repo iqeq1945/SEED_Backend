@@ -16,7 +16,7 @@ import RedisStore from 'connect-redis';
 import UserController from './controllers/user';
 import BookController from './controllers/book';
 import BookItemController from './controllers/bookItem';
-import RedisController from './controllers/redisTest';
+import RedisController from './controllers/redis';
 
 dotenv.config();
 passportConfig(passport);

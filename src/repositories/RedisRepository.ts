@@ -18,7 +18,7 @@ export const getKeyword = async (id: number) => {
 
 export const setLike = async (bookId: number, userId: number) => {
   try {
-    return await redisCli.zAdd(bookId, [{ score: Date.now(), value: userId }]);
+    return await redisCli.sAdd({ key: bookId, value: userId });
   } catch (err) {
     console.log(err);
   }

@@ -10,7 +10,12 @@ export interface Order {
 
 export const findById = async (id: number) => {
   try {
-    return prisma.order.findUnique({ where: { id } });
+    return prisma.order.findUnique({
+      where: { id },
+      include: {
+        user: { select: { id: true, email: true, name: true } },
+      },
+    });
   } catch (err) {
     console.log(err);
   }
@@ -26,7 +31,12 @@ export const create = async (data: Order) => {
 
 export const findByUserId = async (userId: number) => {
   try {
-    return prisma.order.findMany({ where: { userId } });
+    return prisma.order.findMany({
+      where: { userId },
+      include: {
+        user: { select: { id: true, email: true, name: true } },
+      },
+    });
   } catch (err) {
     console.log(err);
   }
@@ -34,7 +44,12 @@ export const findByUserId = async (userId: number) => {
 
 export const findByBookItemId = async (bookItemId: number) => {
   try {
-    return prisma.order.findMany({ where: { bookItemId } });
+    return prisma.order.findMany({
+      where: { bookItemId },
+      include: {
+        user: { select: { id: true, email: true, name: true } },
+      },
+    });
   } catch (err) {
     console.log(err);
   }
