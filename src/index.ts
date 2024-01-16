@@ -16,6 +16,7 @@ import RedisStore from 'connect-redis';
 import UserController from './controllers/user';
 import BookController from './controllers/book';
 import BookItemController from './controllers/bookItem';
+import RedisController from './controllers/redisTest';
 
 dotenv.config();
 passportConfig(passport);
@@ -50,6 +51,7 @@ app.use(morgan('dev'));
 app.use('/users', UserController);
 app.use('/books', BookController);
 app.use('/book-items', BookItemController);
+app.use('/redis', RedisController);
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);
