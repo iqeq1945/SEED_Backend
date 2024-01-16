@@ -16,8 +16,10 @@ model User {
   name     String    @unique
   password String    @db.VarChar(200)
   createdAt DateTime @default(now())
-  status    Boolean @default(false)
-  Book      Book[]
+  seed     Int       @default(0)
+  admin    Boolean  @default(false)
+  book      Book[]
+  order     order[]  
   @@map("users")
 }
 
@@ -42,7 +44,19 @@ model Book_Item {
   book    Book @relation(fields: [bookId], references: [id]) 
   bookId  Int
   published Boolean @default(false)
+  order       order[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@map("book_items")
+}
+
+model order {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId],references: [id])
+  userId Int
+  bookItem Book_Item @relation(fields: [bookItemId],references: [id])
+  bookItemId Int
+  createdAt DateTime @default(now())
+
+  @@map("orders")
 }
