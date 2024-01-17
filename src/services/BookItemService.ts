@@ -60,7 +60,28 @@ export const DeleteItem = async (
     next(err);
   }
 };
-
+export const GetItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await BookItemRepository.findById(
+      parseInt(req.params.id, 10)
+    );
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res
+      .status(200)
+      .send(
+        resFormat.successData(200, 'Book Item 정보 가져오기 성공', response)
+      );
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
 export const OpenItem = async (
   req: Request,
   res: Response,

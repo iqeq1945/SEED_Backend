@@ -57,7 +57,7 @@ export const DeleteRequestValid = async (
     .isNumeric()
     .withMessage('number 형식이어야 합니다.')
     .run(req);
-  BookRequestValid(req, res, next);
+  validationFunction(req, res, next);
 };
 
 export const ReadRequestValid = DeleteRequestValid;
