@@ -30,9 +30,9 @@ export const GetMyOrder = async (
   try {
     const response = await OrderRepository.findByUserId(req.user!.id);
     if (!response) {
-      return res.send(resFormat.fail(400, '실패'));
+      return res.status(400).send(resFormat.fail(400, '실패'));
     }
-    return res.send(resFormat.successData(200, '성공', response));
+    return res.status(200).send(resFormat.successData(200, '성공', response));
   } catch (err) {
     console.log(err);
     next(err);

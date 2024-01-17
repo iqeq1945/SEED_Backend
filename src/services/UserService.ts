@@ -12,19 +12,25 @@ export const SignUp = async (
   try {
     const checkEmail = await UserRepository.findByEmail(req.body.email);
     if (checkEmail) {
-      return res.send(resFormat.fail(409, '이미 존재하는 이메일입니다.'));
+      return res
+        .status(409)
+        .send(resFormat.fail(409, '이미 존재하는 이메일입니다.'));
     }
     const checkName = await UserRepository.findByName(req.body.name);
     if (checkName) {
-      return res.send(resFormat.fail(409, '이미 존해하는 닉네임입니다.'));
+      return res
+        .status(409)
+        .send(resFormat.fail(409, '이미 존재하는 닉네임입니다.'));
     }
     const data = req.body;
     data.password = await bcrypt.hash(req.body.password, 10);
     const response = await UserRepository.create(data);
     if (!response) {
-      return res.send(resFormat.fail(400, '실패'));
+      return res.status(400).send(resFormat.fail(400, '실패'));
     }
-    return res.send(resFormat.successData(200, '회원가입 성공', response));
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '회원가입 성공', response));
   } catch (err) {
     console.error(err);
     next(err);
@@ -51,7 +57,7 @@ export const LogIn = async (
       }
       const data = user;
       delete data.password;
-      res.json(resFormat.successData(200, '로그인 성공', data));
+      res.status(200).send(resFormat.successData(200, '로그인 성공', data));
     });
   })(req, res, next);
 };
@@ -68,7 +74,7 @@ export const LogOut = async (
         next(err);
       } else {
         res.clearCookie('connect.sid');
-        return res.send(resFormat.success(200, '로그아웃 성공'));
+        return res.status(200).send(resFormat.success(200, '로그아웃 성공'));
       }
     });
   });
