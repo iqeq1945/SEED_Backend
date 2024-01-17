@@ -72,7 +72,7 @@ export const ReadBook = async (
   next: NextFunction
 ) => {
   try {
-    const response = await BookRepository.findById(req.body.id);
+    const response = await BookRepository.findById(parseInt(req.params.id, 10));
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '정보 가져오기 실패'));
     }

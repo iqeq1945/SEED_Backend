@@ -54,4 +54,8 @@ Router.post('/check', BookHandler.checkAuthor, function (req, res) {
   return res.send('성공');
 });
 
+Router.post('/test', (req: Request, res: Response) => {
+  console.log(req.body);
+  return res.send(req.body);
+});
 export default Router;
