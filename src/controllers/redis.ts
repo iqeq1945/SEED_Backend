@@ -5,8 +5,7 @@ const Router = express.Router();
 
 Router.get('/', async (req: Request, res: Response) => {
   const response = await RedisRepository.setLike(12, 5);
-  console.log(response);
-  res.send(response);
+  res.json(response);
 });
 
 export default Router;
