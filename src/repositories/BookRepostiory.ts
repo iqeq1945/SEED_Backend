@@ -135,10 +135,8 @@ export const getList = async (
               },
             },
           },
-          {
-            category,
-          },
         ],
+        category,
       },
       include: {
         author: {

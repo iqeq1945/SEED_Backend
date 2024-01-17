@@ -11,9 +11,12 @@ import session from 'express-session';
 import passport from 'passport';
 import passportConfig from './config/passport';
 import dotenv from 'dotenv';
+import { redisCli } from './config/redis';
+import RedisStore from 'connect-redis';
 import UserController from './controllers/user';
 import BookController from './controllers/book';
 import BookItemController from './controllers/bookItem';
+import RedisController from './controllers/redis';
 
 dotenv.config();
 passportConfig(passport);
@@ -36,6 +39,7 @@ app.use(
       httpOnly: true,
       secure: false,
     },
+    store: new RedisStore({ client: redisCli, prefix: 'session:' }),
   })
 );
 app.use(passport.initialize());
@@ -47,6 +51,7 @@ app.use(morgan('dev'));
 app.use('/users', UserController);
 app.use('/books', BookController);
 app.use('/book-items', BookItemController);
+app.use('/redis', RedisController);
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);

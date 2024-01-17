@@ -18,8 +18,8 @@ Router.post(
 Router.post(
   '/delete',
   UserHandler.isLoggedIn,
-  BookHandler.checkAuthor,
   BookValidation.DeleteRequestValid,
+  BookHandler.checkAuthor,
   BookService.DeleteBook
 );
 
@@ -27,8 +27,8 @@ Router.post(
 Router.patch(
   '/update',
   UserHandler.isLoggedIn,
-  BookHandler.checkAuthor,
   BookValidation.UpdateRequestValid,
+  BookHandler.checkAuthor,
   BookService.UpdateBook
 );
 
@@ -48,6 +48,9 @@ Router.get(
   BookValidation.CategoryRequestValid,
   BookService.GetListBook
 );
+
+// Book List 전체 보기
+Router.get('/list', BookService.GetListBook);
 
 // Book 권한 확인 테스트
 Router.post('/check', BookHandler.checkAuthor, function (req, res) {

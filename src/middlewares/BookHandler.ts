@@ -11,10 +11,12 @@ export const checkAuthor = async (
     const id = req.body.bookId || req.body.id;
     const response = await BookRepository.findById(id);
     if (!response) {
-      return res.send(resFormat.fail(403, '존재하지 않는 정보입니다.'));
+      return res
+        .status(403)
+        .send(resFormat.fail(403, '존재하지 않는 정보입니다.'));
     }
-    if (response!.author.id != req.user.id) {
-      return res.send(resFormat.fail(401, '권한을 갖고 있지 않음'));
+    if (response!.author.id != req.user!.id) {
+      return res.status(401).send(resFormat.fail(401, '권한을 갖고 있지 않음'));
     }
     next();
   } catch (err) {

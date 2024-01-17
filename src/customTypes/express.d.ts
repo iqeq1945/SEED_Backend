@@ -1,7 +1,15 @@
-import User from '../../models/user';
+import { reqUserType } from '../repositories/UserRepository';
 
-declare module 'express-serve-static-core' {
-  interface Request {
-    user?: User;
+declare global {
+  namespace Express {
+    interface User extends reqUserType {
+      id: number;
+      email: string;
+      name: string;
+      status: boolean;
+    }
+    interface Request {
+      user?: User;
+    }
   }
 }

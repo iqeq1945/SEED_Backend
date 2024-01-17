@@ -5,7 +5,7 @@ export const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     next();
   } else {
-    res.status(401).send(resFormat.fail(403, '로그인이 필요합니다.'));
+    res.status(403).send(resFormat.fail(403, '로그인이 필요합니다.'));
   }
 };
 
@@ -22,9 +22,9 @@ export const isNotLoggedIn = (
 };
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  if (req.user.status) {
+  if (req.user?.admin) {
     next();
   } else {
-    res.status(401).send(resFormat.fail(401, '권한이 없는 유저입니다.'));
+    res.status(401).send(resFormat.fail(401, '권한이 없습니다.'));
   }
 };

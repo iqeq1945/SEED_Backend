@@ -66,7 +66,7 @@ export const DeleteRequestValid = async (
 ) => {
   await check('id')
     .exists()
-    .withMessage('id가 없습니다.')
+    .withMessage('book의 id가 없습니다.')
     .bail()
     .isNumeric()
     .withMessage('number 형식이어야 합니다.')
