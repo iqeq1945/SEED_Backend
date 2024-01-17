@@ -97,20 +97,11 @@ export const GetListBook = async (
     const category = (req.params.category as string)
       ? (req.params.category as string)
       : undefined;
-    if (keyword) {
-      const response = await BookRepository.getByKeyword(keyword);
-      if (!response) return res.status(400).send(resFormat.fail(400, '실패'));
-      return res
-        .status(200)
-        .send(resFormat.successData(200, '검색 성공', response));
-    }
-    if (category) {
-      const response = await BookRepository.getByCategory(category);
-      if (!response) return res.status(400).send(resFormat.fail(400, '실패'));
-      return res
-        .status(200)
-        .send(resFormat.successData(200, '검색 성공', response));
-    }
+    const response = await BookRepository.getList(keyword, category);
+    if (!response) return res.status(400).send(resFormat.fail(400, '실패'));
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '검색 성공', response));
   } catch (err) {
     console.log(err);
     next(err);
