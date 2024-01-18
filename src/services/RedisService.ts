@@ -44,3 +44,47 @@ export const GetLike = async (
     next(err);
   }
 };
+
+export const SetKeyword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.setKeyword(
+      req.body.keyword,
+      req.user!.id
+    );
+    console.log(typeof response);
+    if (isNaN(response)) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res
+      .status(200)
+      .send(resFormat.success(200, '최근검색목록 등록 성공'));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const GetKeyword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.getKeyword(req.user!.id);
+    if (!response) {
+      return res
+        .status(400)
+        .send(resFormat.fail(400, '최근 검색목록 가져오기 실패'));
+    }
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '최근검색목록 갖고오기 성공', response));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
