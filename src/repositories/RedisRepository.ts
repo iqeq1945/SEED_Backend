@@ -18,7 +18,14 @@ export const getKeyword = async (id: number) => {
 
 export const setLike = async (bookId: number, userId: number) => {
   try {
-    await redisCli.sAdd(`Like:${bookId}`, `${userId}`);
+    return await redisCli.sAdd(`Like:${bookId}`, `${userId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getLike = async (bookId: number) => {
+  try {
     return redisCli.sMembers(`Like:${bookId}`);
   } catch (err) {
     console.log(err);

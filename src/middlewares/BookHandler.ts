@@ -24,3 +24,23 @@ export const checkAuthor = async (
     next(err);
   }
 };
+
+export const existBook = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const bookId = req.body.bookId || parseInt(req.params.bookId, 10);
+    const response = await BookRepository.findById(bookId);
+    if (!response) {
+      return res
+        .status(400)
+        .send(resFormat.fail(400, '존재하지 않는 id입니다.'));
+    }
+    next();
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};

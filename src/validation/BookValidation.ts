@@ -3,7 +3,6 @@ import validationFunction from './validationFunction';
 import { Request, Response, NextFunction } from 'express';
 
 // authorId
-
 export const AuthorRequestValid = async (
   req: Request,
   res: Response,
@@ -20,7 +19,6 @@ export const AuthorRequestValid = async (
 };
 
 // title, cycle, category, authorId, introduce
-
 export const CreateRequestValid = async (
   req: Request,
   res: Response,
@@ -58,7 +56,6 @@ export const CreateRequestValid = async (
 };
 
 // id
-
 export const DeleteRequestValid = async (
   req: Request,
   res: Response,
@@ -77,7 +74,6 @@ export const DeleteRequestValid = async (
 export const ReadRequestValid = DeleteRequestValid;
 
 // ALL
-
 export const UpdateRequestValid = async (
   req: Request,
   res: Response,
@@ -115,7 +111,6 @@ export const UpdateRequestValid = async (
 };
 
 // Get By Keywrod
-
 export const KeywrodRequestValid = async (
   req: Request,
   res: Response,
@@ -132,7 +127,6 @@ export const KeywrodRequestValid = async (
 };
 
 // Get By Category
-
 export const CategoryRequestValid = async (
   req: Request,
   res: Response,
