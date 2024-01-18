@@ -18,6 +18,22 @@ export const UserRequestValid = async (
   validationFunction(req, res, next);
 };
 
+// book id 요구
+export const BookRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('bookId')
+    .exists()
+    .withMessage('bookId가 없습니다.')
+    .bail()
+    .isNumeric()
+    .withMessage('형식에 맞지 않습니다.')
+    .run(req);
+  validationFunction(req, res, next);
+};
+
 // book_item id 요구
 export const BookItemRequestValid = async (
   req: Request,
@@ -34,12 +50,17 @@ export const BookItemRequestValid = async (
   validationFunction(req, res, next);
 };
 
-// user id + book_item id 구매요구
-export const OrderRequestValid = async (
+export const OrderValidation = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  UserRequestValid(req, res, next);
+  await check('bookId')
+    .exists()
+    .withMessage('bookId가 없습니다.')
+    .bail()
+    .isNumeric()
+    .withMessage('형식에 맞지 않습니다.')
+    .run(req);
   BookItemRequestValid(req, res, next);
 };

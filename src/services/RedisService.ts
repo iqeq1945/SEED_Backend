@@ -55,7 +55,6 @@ export const SetKeyword = async (
       req.body.keyword,
       req.user!.id
     );
-    console.log(typeof response);
     if (isNaN(response)) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }

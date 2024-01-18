@@ -17,6 +17,7 @@ import UserController from './controllers/user';
 import BookController from './controllers/book';
 import BookItemController from './controllers/bookItem';
 import RedisController from './controllers/redis';
+import OrderController from './controllers/order';
 
 dotenv.config();
 passportConfig(passport);
@@ -52,6 +53,7 @@ app.use('/users', UserController);
 app.use('/books', BookController);
 app.use('/book-items', BookItemController);
 app.use('/redis', RedisController);
+app.use('/order', OrderController);
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);

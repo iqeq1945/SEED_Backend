@@ -36,7 +36,7 @@ export const existBook = async (
     if (!response) {
       return res
         .status(400)
-        .send(resFormat.fail(400, '존재하지 않는 id입니다.'));
+        .send(resFormat.fail(400, '존재하지 않는 book id입니다.'));
     }
     next();
   } catch (err) {
