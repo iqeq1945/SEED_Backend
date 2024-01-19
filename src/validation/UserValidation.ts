@@ -38,3 +38,19 @@ export const LoginRequestValid = async (
     .run(req);
   validationFunction(req, res, next);
 };
+
+// seed
+export const SeedRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('seed')
+    .exists()
+    .withMessage('seed가 없습니다.')
+    .bail()
+    .isNumeric()
+    .withMessage('형식에 맞지 않습니다.')
+    .run(req);
+  validationFunction(req, res, next);
+};

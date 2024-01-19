@@ -33,6 +33,7 @@ model Book {
   author      User @relation(fields: [authorId], references: [id])
   authorId    Int
   item        Book_Item[]
+  order       Order[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@map("books")
@@ -44,7 +45,7 @@ model Book_Item {
   content     String @db.Text()
   book        Book @relation(fields: [bookId], references: [id]) 
   bookId      Int
-  published   Boolean @default(false)
+  open   Boolean @default(false)
   order       Order[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -52,12 +53,14 @@ model Book_Item {
 }
 
 model Order {
-  id          Int @id @default(autoincrement())
-  user        User @relation(fields: [userId],references: [id])
-  userId      Int
-  bookItem    Book_Item @relation(fields: [bookItemId],references: [id])
-  bookItemId  Int
-  createdAt   DateTime @default(now())
+  id            Int @id @default(autoincrement())
+  user          User @relation(fields: [userId],references: [id])
+  userId        Int
+  book          Book @relation(fields: [bookId],references: [id])
+  bookId        Int
+  bookItem      Book_Item @relation(fields: [bookItemId],references: [id])
+  bookItemId    Int
+  createdAt     DateTime @default(now())
 
   @@map("orders")
 }

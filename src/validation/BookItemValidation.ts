@@ -85,3 +85,19 @@ export const UpdateRequestValid = async (
     .run(req);
   DeleteRequestValid(req, res, next);
 };
+
+// id, open
+export const OpenRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('open')
+    .exists()
+    .withMessage('open이 없습니다.')
+    .bail()
+    .isBoolean()
+    .withMessage('boolean 형식이어야 합니다.')
+    .run(req);
+  DeleteRequestValid;
+};

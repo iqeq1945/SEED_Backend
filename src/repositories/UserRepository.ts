@@ -47,3 +47,20 @@ export const create = async (data: userType) => {
     console.log(err);
   }
 };
+
+export const changeSeed = async (id: number, seed: number) => {
+  try {
+    return await prisma.user.update({
+      where: { id: id },
+      data: { seed: { increment: seed } },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        seed: true,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};

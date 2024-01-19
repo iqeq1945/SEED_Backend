@@ -79,3 +79,25 @@ export const LogOut = async (
     });
   });
 };
+
+export const ChangeSeed = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await UserRepository.changeSeed(
+      req.user!.id,
+      req.body.seed
+    );
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res
+      .status(200)
+      .send(resFormat.successData(200, 'seed 값 변경 완료', response));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};

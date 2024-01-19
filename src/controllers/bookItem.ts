@@ -38,4 +38,13 @@ Router.get(
   BookItemValidation.ReadRequestValid,
   BookItemService.GetItem
 );
+
+Router.post(
+  '/open',
+  UserHandler.isAdmin,
+  BookItemValidation.OpenRequestValid,
+  BookItemHandler.existBookItem,
+  BookItemService.OpenItem
+);
+
 export default Router;
