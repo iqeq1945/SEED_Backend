@@ -22,6 +22,7 @@ export const isNotLoggedIn = (
 };
 
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  isLoggedIn(req, res, next);
   if (req.user?.admin) {
     next();
   } else {

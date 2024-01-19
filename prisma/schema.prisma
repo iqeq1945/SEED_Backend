@@ -45,7 +45,7 @@ model Book_Item {
   content     String @db.Text()
   book        Book @relation(fields: [bookId], references: [id]) 
   bookId      Int
-  published   Boolean @default(false)
+  open   Boolean @default(false)
   order       Order[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

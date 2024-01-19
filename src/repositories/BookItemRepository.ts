@@ -19,10 +19,6 @@ export interface BOOK_ITEM extends BOOK_ITEM_INIT {
   bookId: number;
 }
 
-export interface BOOK_ITEM_OPEN extends BOOK_ITEM_INIT {
-  id: number;
-}
-
 export const findById = async (id: number) => {
   try {
     return await prisma.book_Item.findUnique({
@@ -59,9 +55,14 @@ export const update = async (id: number, data: BOOK_ITEM_UPDATE) => {
   }
 };
 
-export const open = async (id: number, data: BOOK_ITEM_OPEN) => {
+export const open = async (id: number, open: boolean) => {
   try {
-    return await prisma.book_Item.update({ where: { id: id }, data });
+    return await prisma.book_Item.update({
+      where: { id: id },
+      data: {
+        open: open,
+      },
+    });
   } catch (err) {
     console.log(err);
   }

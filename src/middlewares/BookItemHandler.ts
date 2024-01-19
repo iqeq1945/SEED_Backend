@@ -51,7 +51,7 @@ export const existBookItem = async (
 ) => {
   try {
     const bookItemId =
-      req.body.bookItemId || parseInt(req.params.bookItemId, 10);
+      req.body.bookItemId || req.body.id || parseInt(req.params.bookItemId, 10);
     const response = await BookItemRepository.findById(bookItemId);
     if (!response) {
       return res
