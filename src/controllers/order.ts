@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import * as UserHandler from '../middlewares/UserHandler';
+import * as BookHandler from '../middlewares/BookHandler';
 import * as BookItemHandler from '../middlewares/BookItemHandler';
 import * as OrderValidation from '../validation/OrderValidation';
 import * as OrderService from '../services/OrderService';
@@ -16,4 +17,11 @@ Router.post(
   OrderService.CreateOrder
 );
 
+Router.get(
+  '/book/:bookId',
+  UserHandler.isLoggedIn,
+  OrderValidation.BookRequestValid,
+  BookHandler.checkAuthor,
+  OrderService.GetOrderByBook
+);
 export default Router;

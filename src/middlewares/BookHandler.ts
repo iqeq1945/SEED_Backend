@@ -8,7 +8,8 @@ export const checkAuthor = async (
   next: NextFunction
 ) => {
   try {
-    const id = req.body.bookId || req.body.id;
+    const id =
+      req.body.bookId || req.body.id || parseInt(req.params.bookId, 10);
     const response = await BookRepository.findById(id);
     if (!response) {
       return res
