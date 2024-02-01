@@ -38,13 +38,9 @@ Router.patch(
   UserService.ChangeSeed
 );
 
-// 로그인 테스트
-Router.get('/', function (req: Request, res: Response) {
-  console.log(req.user);
-  if (req.isAuthenticated() && req.user) {
-    return res.json({ user: req.user });
-  }
-  return res.json({ user: null });
+// 로그인 중인거 확인
+Router.get('/', UserHandler.isLoggedIn, (req: Request, res: Response) => {
+  return res.status(200).send(req.user);
 });
 
 export default Router;

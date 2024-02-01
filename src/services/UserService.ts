@@ -22,15 +22,35 @@ export const SignUp = async (
         .status(409)
         .send(resFormat.fail(409, '이미 존재하는 닉네임입니다.'));
     }
-    const data = req.body;
+    const data = JSON.parse(JSON.stringify(req.body));
+
     data.password = await bcrypt.hash(req.body.password, 10);
     const response = await UserRepository.create(data);
-    if (!response) {
-      return res.status(400).send(resFormat.fail(400, '실패'));
+    if (response) {
+      console.log(req.body);
+      passport.authenticate('local', (err: any, user: any, info: any) => {
+        if (err) {
+          return next(err);
+        }
+        if (!user) {
+          return res
+            .status(400)
+            .send(resFormat.fail(400, '일치하는 사용자가 없습니다.'));
+        }
+        req.login(user, (err) => {
+          if (err) {
+            //passport login 실행단계
+            console.error(err);
+            next(err);
+          }
+          const data = user;
+          delete data.password;
+          res
+            .status(200)
+            .send(resFormat.successData(200, '로그인 및  회원가입 성공', data));
+        });
+      })(req, res, next);
     }
-    return res
-      .status(200)
-      .send(resFormat.successData(200, '회원가입 성공', response));
   } catch (err) {
     console.error(err);
     next(err);
@@ -47,7 +67,9 @@ export const LogIn = async (
       return next(err);
     }
     if (!user) {
-      return res.send(resFormat.fail(400, '일치하는 사용자가 없습니다.'));
+      return res
+        .status(400)
+        .send(resFormat.fail(400, '일치하는 사용자가 없습니다.'));
     }
     req.login(user, (err) => {
       if (err) {
