@@ -32,6 +32,7 @@ model Book {
   cycle       String
   author      User @relation(fields: [authorId], references: [id])
   authorId    Int
+  comment     Comment[]
   item        Book_Item[]
   order       Order[]
   createdAt   DateTime @default(now())
@@ -45,6 +46,7 @@ model Book_Item {
   content     String @db.Text()
   book        Book @relation(fields: [bookId], references: [id]) 
   bookId      Int
+  comment Comment[]
   open   Boolean @default(false)
   order       Order[]
   createdAt   DateTime @default(now())
@@ -70,8 +72,10 @@ model Comment {
   user      User @relation(fields: [userId],references: [id])
   userId    Int
   content   String @db.Text()
-  status    Boolean
-  targetId  Int     
+  book Book @relation(fields: [bookId],references: [id])
+  bookId Int
+  bookItem Book_Item @relation(fields: [bookItemId], references: [id])
+  bookItemId  Int     
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
