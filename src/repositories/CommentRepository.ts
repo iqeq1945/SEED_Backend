@@ -6,15 +6,15 @@ export interface COMMENT_INIT {
   id?: number;
   userId?: number;
   content?: string;
-  status?: boolean;
-  targetId?: number;
+  bookId?: number;
+  bookItemId?: number;
 }
 
 export interface COMMENT extends COMMENT_INIT {
   userId: number;
   content: string;
-  status: boolean;
-  targetId: number;
+  bookId: number;
+  bookItemId: number;
 }
 
 export interface COMMENT_UPDATE extends COMMENT_INIT {
@@ -38,10 +38,20 @@ export const findByUser = async (userId: number) => {
   }
 };
 
-export const findByTarget = async (status: boolean, targetId: number) => {
+export const findByBook = async (bookId: number) => {
   try {
     return await prisma.comment.findMany({
-      where: { targetId: targetId, status: status },
+      where: { bookId },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const findByBookItem = async (bookItemId: number) => {
+  try {
+    return await prisma.comment.findMany({
+      where: { bookItemId },
     });
   } catch (err) {
     console.log(err);
