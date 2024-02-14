@@ -33,12 +33,14 @@ Router.patch(
   BookItemService.UpdateItem
 );
 
+// Book Item 정보 얻기
 Router.get(
   '/:id',
   BookItemValidation.ReadRequestValid,
   BookItemService.GetItem
 );
 
+// Book Open 설정
 Router.post(
   '/open',
   UserHandler.isAdmin,

@@ -52,6 +52,11 @@ Router.get(
 // Book List 전체 보기
 Router.get('/list', BookService.GetListBook);
 
+// Book Query접근
+Router.get('/getList', (req: Request, res: Response) => {
+  res.json(req.query);
+});
+
 // Book 권한 확인 테스트
 Router.post('/check', BookHandler.checkAuthor, function (req, res) {
   return res.send('성공');
