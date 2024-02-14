@@ -107,3 +107,26 @@ export const GetListBook = async (
     next(err);
   }
 };
+
+export const GetListBookTest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { keyword, category, skip, take }: any = req.query;
+    const response = await BookRepository.getListTest(
+      keyword as string,
+      category as string,
+      +skip as number,
+      +take as number
+    );
+    if (!response) return res.status(400).send(resFormat.fail(400, '실패'));
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '검색 성공', response));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
