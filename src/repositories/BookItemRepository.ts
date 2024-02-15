@@ -25,6 +25,7 @@ export const findById = async (id: number) => {
       where: { id: id },
       include: {
         book: true,
+        comment: true,
       },
     });
   } catch (err) {

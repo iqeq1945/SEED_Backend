@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import * as UserHandler from '../middlewares/UserHandler';
 import * as BookHandler from '../middlewares/BookHandler';
 import * as BookItemHandler from '../middlewares/BookItemHandler';
