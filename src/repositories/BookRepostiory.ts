@@ -151,7 +151,7 @@ export const getList = async (
   }
 };
 
-export const getListTest = async (
+export const getListQuery = async (
   keyword: string | undefined,
   category: string | undefined,
   skip: number | undefined,
@@ -159,7 +159,8 @@ export const getListTest = async (
 ) => {
   try {
     return await prisma.book.findMany({
-      take: 10,
+      skip,
+      take,
       where: {
         OR: [
           {

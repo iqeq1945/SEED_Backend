@@ -85,41 +85,22 @@ export const ReadBook = async (
   }
 };
 
-export const GetListBook = async (
+export const GetListQuery = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const keyword = (req.params.keyword as string)
-      ? (req.params.keyword as string)
-      : undefined;
-    const category = (req.params.category as string)
-      ? (req.params.category as string)
-      : undefined;
-    const response = await BookRepository.getList(keyword, category);
-    if (!response) return res.status(400).send(resFormat.fail(400, '실패'));
-    return res
-      .status(200)
-      .send(resFormat.successData(200, '검색 성공', response));
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
+    let data = JSON.parse(JSON.stringify(req.query));
 
-export const GetListBookTest = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { keyword, category, skip, take }: any = req.query;
-    const response = await BookRepository.getListTest(
-      keyword as string,
-      category as string,
-      +skip as number,
-      +take as number
+    if (data.skip.length == 0) data.skip = 0;
+    if (data.take.length == 0) data.take = 10;
+
+    const response = await BookRepository.getListQuery(
+      data.keyword as string,
+      data.category as string,
+      parseInt(data.skip as string, 10),
+      parseInt(data.take as string, 10)
     );
     if (!response) return res.status(400).send(resFormat.fail(400, '실패'));
     return res

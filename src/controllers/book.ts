@@ -35,25 +35,8 @@ Router.patch(
 // Book 정보 가져오기
 Router.get('/info/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
 
-// Book List keyword통해 가져오기
-Router.get(
-  '/search/:keyword',
-  BookValidation.KeywrodRequestValid,
-  BookService.GetListBook
-);
-
-// Book List category에 맞게 가져오기
-Router.get(
-  '/category/:category',
-  BookValidation.CategoryRequestValid,
-  BookService.GetListBook
-);
-
-// Book List 전체 보기
-Router.get('/list', BookService.GetListBook);
-
-// Book Query접근
-Router.get('/getList', BookService.GetListBookTest);
+// Book Query로 검색
+Router.get('/list', BookService.GetListQuery);
 
 // Book 권한 확인 테스트
 Router.post('/check', BookHandler.checkAuthor, function (req, res) {
