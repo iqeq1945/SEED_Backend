@@ -36,7 +36,11 @@ Router.patch(
 Router.get('/info/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
 
 // Book Query로 검색
-Router.get('/list', BookService.GetListQuery);
+Router.get(
+  '/list',
+  BookValidation.ListsQueryValidation,
+  BookService.GetListQuery
+);
 
 // Book 권한 확인 테스트
 Router.post('/check', BookHandler.checkAuthor, function (req, res) {

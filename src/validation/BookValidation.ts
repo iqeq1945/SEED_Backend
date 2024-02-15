@@ -1,4 +1,4 @@
-import { check } from 'express-validator';
+import { check, query } from 'express-validator';
 import validationFunction from './validationFunction';
 import { Request, Response, NextFunction } from 'express';
 
@@ -110,34 +110,32 @@ export const UpdateRequestValid = async (
   DeleteRequestValid(req, res, next);
 };
 
-// Get By Keywrod
-export const KeywrodRequestValid = async (
+// Get List / keyword, category, skip, take
+
+export const ListsQueryValidation = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   await check('keyword')
-    .exists()
-    .withMessage('keyword가 없습니다.')
-    .bail()
+    .if(query('keyword').exists())
     .isString()
-    .withMessage('string 형식이어야 합니다.')
+    .withMessage('keyword는 string 형식입니다.')
     .run(req);
-  validationFunction(req, res, next);
-};
-
-// Get By Category
-export const CategoryRequestValid = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
   await check('category')
-    .exists()
-    .withMessage('category가 없습니다.')
-    .bail()
+    .if(query('category').exists())
     .isString()
-    .withMessage('string 형식이어야 합니다.')
+    .withMessage('category는 string 형식입니다.')
+    .run(req);
+  await check('skip')
+    .if(query('skip').exists())
+    .isString()
+    .withMessage('skip는 string 형식입니다.')
+    .run(req);
+  await check('take')
+    .if(query('take').exists())
+    .isString()
+    .withMessage('take는 string 형식입니다.')
     .run(req);
   validationFunction(req, res, next);
 };

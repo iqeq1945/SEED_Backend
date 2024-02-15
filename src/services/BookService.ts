@@ -93,8 +93,13 @@ export const GetListQuery = async (
   try {
     let data = JSON.parse(JSON.stringify(req.query));
 
-    if (data.skip.length == 0) data.skip = 0;
-    if (data.take.length == 0) data.take = 10;
+    if ('skip' in data) data.skip = data.skip === '' ? 0 : data.skip;
+    else data.skip = 0;
+
+    if ('take' in data) data.take = data.take === '' ? 10 : data.take;
+    else data.take = 10;
+
+    console.log(data);
 
     const response = await BookRepository.getListQuery(
       data.keyword as string,
