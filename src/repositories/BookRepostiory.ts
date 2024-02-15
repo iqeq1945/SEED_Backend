@@ -150,3 +150,43 @@ export const getList = async (
     console.log(err);
   }
 };
+
+export const getListQuery = async (
+  keyword: string | undefined,
+  category: string | undefined,
+  skip: number | undefined,
+  take: number | undefined
+) => {
+  try {
+    return await prisma.book.findMany({
+      skip,
+      take,
+      where: {
+        OR: [
+          {
+            title: {
+              contains: keyword,
+            },
+          },
+          {
+            author: {
+              name: {
+                contains: keyword,
+              },
+            },
+          },
+        ],
+        category,
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
