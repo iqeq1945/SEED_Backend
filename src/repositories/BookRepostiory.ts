@@ -33,6 +33,7 @@ export const findById = async (id: number) => {
           },
         },
         item: true,
+        comment: true,
       },
     });
   } catch (err) {

@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import * as BookService from '../services/BookService';
 import * as BookValidation from '../validation/BookValidation';
 import * as UserHandler from '../middlewares/UserHandler';
