@@ -8,7 +8,9 @@ export const checkAuthor = async (
   next: NextFunction
 ) => {
   try {
-    const response = await CommentRepository.findById(req.body.id);
+    const response = await CommentRepository.findById(
+      req.body.id || parseInt(req.params.id, 10)
+    );
     if (!response) {
       return res
         .status(403)

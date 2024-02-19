@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import * as CommentRepository from '../repositories/CommentRepository';
 import resFormat from '../utils/resFormat';
-import { commandOptions } from 'redis';
 
 export const CreateComment = async (
   req: Request,
@@ -54,7 +53,9 @@ export const DeleteComment = async (
   next: NextFunction
 ) => {
   try {
-    const response = await CommentRepository.clear(req.body.id);
+    const response = await CommentRepository.clear(
+      req.body.id || parseInt(req.params.id, 10)
+    );
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
@@ -65,13 +66,15 @@ export const DeleteComment = async (
   }
 };
 
-export const GetMyComment = async (
+export const GetCommentByUser = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const response = await CommentRepository.findByUser(req.body.userId);
+    const response = await CommentRepository.findByUser(
+      parseInt(req.params.userId, 10)
+    );
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
@@ -90,7 +93,9 @@ export const GetCommentByBook = async (
   next: NextFunction
 ) => {
   try {
-    const response = await CommentRepository.findByBook(req.body.bookId);
+    const response = await CommentRepository.findByBook(
+      parseInt(req.params.bookId, 10)
+    );
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
@@ -110,7 +115,7 @@ export const GetCommentByBookItem = async (
 ) => {
   try {
     const response = await CommentRepository.findByBookItem(
-      req.body.bookItemId
+      parseInt(req.params.bookItemId, 10)
     );
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));

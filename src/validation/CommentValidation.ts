@@ -10,22 +10,31 @@ export const CreateRequestValid = async (
 ) => {
   await check('userId')
     .exists()
-    .bail()
     .withMessage('userId가 존재하지 않습니다.')
+    .bail()
     .isNumeric()
     .withMessage('userId는 number자료형 입니다.')
     .run(req);
   await check('bookId')
-    .bail()
+    .exists()
     .withMessage('bookId가 존재하지 않습니다.')
+    .bail()
     .isNumeric()
     .withMessage('bookId는 number자료형 입니다.')
     .run(req);
   await check('bookItemId')
-    .bail()
+    .exists()
     .withMessage('bookItemId가 존재하지 않습니다.')
+    .bail()
     .isNumeric()
     .withMessage('bookItemId는 number자료형 입니다.')
+    .run(req);
+  await check('content')
+    .exists()
+    .withMessage('content이 없습니다.')
+    .bail()
+    .isString()
+    .withMessage('string 형식이어야 합니다.')
     .run(req);
   validationFunction(req, res, next);
 };
@@ -36,8 +45,9 @@ export const DeleteRequestValid = async (
   next: NextFunction
 ) => {
   await check('id')
-    .bail()
+    .exists()
     .withMessage('id가 존재하지 않습니다.')
+    .bail()
     .isNumeric()
     .withMessage('id는 number자료형 입니다.')
     .run(req);
@@ -56,5 +66,50 @@ export const UpdateRequestValid = async (
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
-  UpdateRequestValid(req, res, next);
+  DeleteRequestValid(req, res, next);
+};
+
+export const GetByUserRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('userId')
+    .exists()
+    .withMessage('userId가 없습니다.')
+    .bail()
+    .isNumeric()
+    .withMessage('number 형식이어야 합니다.')
+    .run(req);
+  validationFunction(req, res, next);
+};
+
+export const GetByBookRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('bookId')
+    .exists()
+    .withMessage('bookId가 없습니다.')
+    .bail()
+    .isNumeric()
+    .withMessage('number 형식이어야 합니다.')
+    .run(req);
+  validationFunction(req, res, next);
+};
+
+export const GetByBookItemRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('bookItemId')
+    .exists()
+    .withMessage('bookItemId가 없습니다.')
+    .bail()
+    .isNumeric()
+    .withMessage('number 형식이어야 합니다.')
+    .run(req);
+  validationFunction(req, res, next);
 };
