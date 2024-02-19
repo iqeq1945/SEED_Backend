@@ -8,7 +8,8 @@ export const checkAuthor = async (
   next: NextFunction
 ) => {
   try {
-    const id = req.body.bookItemId || req.body.id;
+    const id =
+      req.body.bookItemId || req.body.id || parseInt(req.params.id, 10);
     const response = await BookItemRepository.findById(id);
     if (!response) {
       return res
@@ -30,7 +31,9 @@ export const checkBook = async (
   res: Response,
   next: NextFunction
 ) => {
-  const response = await BookItemRepository.findById(req.body.bookItemId);
+  const response = await BookItemRepository.findById(
+    req.body.bookItemId || parseInt(req.params.id, 10)
+  );
   if (!response) {
     return res
       .status(400)
@@ -51,7 +54,7 @@ export const existBookItem = async (
 ) => {
   try {
     const bookItemId =
-      req.body.bookItemId || req.body.id || parseInt(req.params.bookItemId, 10);
+      req.body.bookItemId || req.body.id || parseInt(req.params.id, 10);
     const response = await BookItemRepository.findById(bookItemId);
     if (!response) {
       return res

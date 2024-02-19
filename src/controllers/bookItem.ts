@@ -16,8 +16,8 @@ Router.post(
 );
 
 // Book Item 삭제
-Router.post(
-  '/delete',
+Router.delete(
+  '/:id',
   UserHandler.isLoggedIn,
   BookItemValidation.DeleteRequestValid,
   BookItemHandler.checkAuthor,
@@ -26,7 +26,7 @@ Router.post(
 
 // Book Item 수정
 Router.patch(
-  '/update',
+  '/',
   UserHandler.isLoggedIn,
   BookItemValidation.UpdateRequestValid,
   BookItemHandler.checkAuthor,
