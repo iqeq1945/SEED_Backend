@@ -1,4 +1,4 @@
-import { check, query } from 'express-validator';
+import { check, query, body } from 'express-validator';
 import validationFunction from './validationFunction';
 import { Request, Response, NextFunction } from 'express';
 
@@ -80,30 +80,22 @@ export const UpdateRequestValid = async (
   next: NextFunction
 ) => {
   await check('title')
-    .exists()
-    .withMessage('title이 없습니다.')
-    .bail()
+    .if(body('title').exists())
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
   await check('cycle')
-    .exists()
-    .withMessage('cycle이 없습니다.')
-    .bail()
+    .if(body('cycle').exists())
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
   await check('category')
-    .exists()
-    .withMessage('category이 없습니다.')
-    .bail()
+    .if(body('category').exists())
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
   await check('introduce')
-    .exists()
-    .withMessage('introduce이 없습니다.')
-    .bail()
+    .if(body('introduce').exists())
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);

@@ -15,8 +15,8 @@ Router.post(
 );
 
 // Book 삭제
-Router.post(
-  '/delete',
+Router.delete(
+  '/:id',
   UserHandler.isLoggedIn,
   BookValidation.DeleteRequestValid,
   BookHandler.checkAuthor,
@@ -25,7 +25,7 @@ Router.post(
 
 // Book 수정
 Router.patch(
-  '/update',
+  '/',
   UserHandler.isLoggedIn,
   BookValidation.UpdateRequestValid,
   BookHandler.checkAuthor,
@@ -33,7 +33,7 @@ Router.patch(
 );
 
 // Book 정보 가져오기
-Router.get('/info/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
+Router.get('/:id', BookValidation.ReadRequestValid, BookService.ReadBook);
 
 // Book Query로 검색
 Router.get(
@@ -41,10 +41,5 @@ Router.get(
   BookValidation.ListsQueryValidation,
   BookService.GetListQuery
 );
-
-// Book 권한 확인 테스트
-Router.post('/check', BookHandler.checkAuthor, function (req, res) {
-  return res.send('성공');
-});
 
 export default Router;

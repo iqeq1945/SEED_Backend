@@ -53,7 +53,7 @@ export const DeleteBook = async (
   next: NextFunction
 ) => {
   try {
-    const response = await BookRepository.erase(req.body.id);
+    const response = await BookRepository.erase(parseInt(req.params.id, 10));
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
