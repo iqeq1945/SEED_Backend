@@ -8,6 +8,14 @@ export const SetLike = async (
   next: NextFunction
 ) => {
   try {
+    const check = await RedisRepository.getLike(req.body.bookId);
+    console.log(check);
+    if (check.indexOf(String(req.body.bookId)) && check.length > 0) {
+      return res
+        .status(400)
+        .send(resFormat.fail(400, '이미 좋아요 상태입니다.'));
+    }
+
     const response = await RedisRepository.setLike(
       req.body.bookId,
       req.user!.id
@@ -16,6 +24,26 @@ export const SetLike = async (
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
     return res.status(200).send(resFormat.success(200, '좋아요 성공'));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const DelLike = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.delLike(
+      parseInt(req.params.bookId, 10),
+      req.user!.id
+    );
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res.status(200).send(resFormat.success(200, '좋아요 취소 성송'));
   } catch (err) {
     console.log(err);
     next(err);
@@ -51,6 +79,11 @@ export const SetKeyword = async (
   next: NextFunction
 ) => {
   try {
+    const len = await RedisRepository.countKeyword(req.user!.id);
+    console.log(len);
+    if (len > 9) {
+      const pop = await RedisRepository.delKeyword(req.user!.id, undefined);
+    }
     const response = await RedisRepository.setKeyword(
       req.body.keyword,
       req.user!.id
@@ -82,6 +115,86 @@ export const GetKeyword = async (
     return res
       .status(200)
       .send(resFormat.successData(200, '최근검색목록 갖고오기 성공', response));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const CountKeyword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.countKeyword(req.user!.id);
+    return res
+      .status(200)
+      .send(
+        resFormat.successData(200, '최근검색목록 개수 가져오기 성공', response)
+      );
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const DelKeyword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.delKeyword(
+      req.user!.id,
+      req.query.value
+    );
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res.status(200).send(resFormat.success(200, '검색목록 삭제'));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const SetView = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.setView(
+      req.body.bookId,
+      req.body.bookItemId,
+      req.user!.id
+    );
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res.status(200).send(resFormat.success(200, '조회수 등록 성공'));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const GetView = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.getView(
+      parseInt(req.params.bookId, 10)
+    );
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '조회수 정보 가져오기 성공', response));
   } catch (err) {
     console.log(err);
     next(err);
