@@ -1,3 +1,4 @@
+import { ParsedQs } from 'qs';
 import { redisCli } from '../config/redis';
 
 export const setKeyword = async (keyword: string, id: number) => {
@@ -13,11 +14,10 @@ export const setKeyword = async (keyword: string, id: number) => {
 export const getKeyword = async (id: number) => {
   try {
     return await redisCli.sendCommand([
-      'ZRANGE',
+      'ZREVRANGE',
       `keyword:${id}`,
-      '-5',
+      '0',
       '-1',
-      'REV',
     ]);
   } catch (err) {
     console.log(err);
@@ -37,9 +37,20 @@ export const countKeyword = async (id: number) => {
   }
 };
 
-export const delKeyword = async (id: number) => {
+export const delKeyword = async (
+  id: number,
+  value: string | string[] | ParsedQs | ParsedQs[] | undefined
+) => {
   try {
-    return await redisCli.sendCommand(['ZMPOPMIN', `keyword:${id}`]);
+    if (value === undefined) {
+      return await redisCli.sendCommand([
+        'ZREMRANGEBYRANK',
+        `keyword:${id}`,
+        '0',
+        '0',
+      ]);
+    }
+    return await redisCli.sendCommand(['ZREM', `keyword:${id}`, value]);
   } catch (err) {
     console.log(err);
   }
@@ -55,7 +66,7 @@ export const setLike = async (bookId: number, userId: number) => {
 
 export const getLike = async (bookId: number) => {
   try {
-    return await redisCli.sMembers(`Like:${bookId}`);
+    return await redisCli.sMembers(`like:${bookId}`);
   } catch (err) {
     console.log(err);
   }
@@ -63,7 +74,7 @@ export const getLike = async (bookId: number) => {
 
 export const countLike = async (bookId: number) => {
   try {
-    return redisCli.sendCommand(['scard', `Like:${bookId}`]);
+    return redisCli.sendCommand(['SCARD', `like:${bookId}`]);
   } catch (err) {
     console.log(err);
   }
@@ -71,7 +82,7 @@ export const countLike = async (bookId: number) => {
 
 export const delLike = async (bookId: number, userId: number) => {
   try {
-    return await redisCli.sendCommand(['SREM', `Like:${bookId}`, `${userId}`]);
+    return await redisCli.sendCommand(['SREM', `like:${bookId}`, `${userId}`]);
   } catch (err) {
     console.log(err);
   }
@@ -83,7 +94,9 @@ export const setView = async (
   userId: number
 ) => {
   try {
-    return await redisCli.sAdd(`view:${bookId}`, `${userId}:${bookItemId}`);
+    return await redisCli.zAdd(`view:${bookId}`, [
+      { score: Date.now(), value: `${userId}:${bookItemId}` },
+    ]);
   } catch (err) {
     console.log(err);
   }
@@ -91,7 +104,12 @@ export const setView = async (
 
 export const getView = async (bookId: number) => {
   try {
-    return await redisCli.sMembers(`view:${bookId}`);
+    return await redisCli.sendCommand([
+      'ZREVRANGE',
+      `view:${bookId}`,
+      '0',
+      '-1',
+    ]);
   } catch (err) {
     console.log(err);
   }
@@ -99,7 +117,12 @@ export const getView = async (bookId: number) => {
 
 export const countView = async (bookId: number) => {
   try {
-    return await redisCli.sendCommand(['scard', `view:${bookId}`]);
+    return await redisCli.sendCommand([
+      'ZCOUNT',
+      `view:${bookId}`,
+      '-inf',
+      '+inf',
+    ]);
   } catch (err) {
     console.log(err);
   }
