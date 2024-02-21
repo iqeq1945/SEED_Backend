@@ -147,7 +147,12 @@ export const checkBookItem = async (bookItemId: number) => {
 
 export const setBookItem = async (bookItemId: number, data: string) => {
   try {
-    return await redisCli.sendCommand(['SETEX', `get:${bookItemId}`, 10, data]);
+    return await redisCli.sendCommand([
+      'SETEX',
+      `get:${bookItemId}`,
+      '60*60',
+      data,
+    ]);
   } catch (err) {
     console.log(err);
   }
