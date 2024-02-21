@@ -127,3 +127,28 @@ export const countView = async (bookId: number) => {
     console.log(err);
   }
 };
+
+export const getBookItem = async (bookItemId: number) => {
+  try {
+    const response = await redisCli.sendCommand(['GET', `get:${bookItemId}`]);
+    return JSON.parse(response);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const checkBookItem = async (bookItemId: number) => {
+  try {
+    return await redisCli.sendCommand(['EXISTS', `get:${bookItemId}`]);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const setBookItem = async (bookItemId: number, data: string) => {
+  try {
+    return await redisCli.sendCommand(['SETEX', `get:${bookItemId}`, 10, data]);
+  } catch (err) {
+    console.log(err);
+  }
+};
