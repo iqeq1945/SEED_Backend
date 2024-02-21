@@ -7,7 +7,12 @@ import * as OrderService from '../services/OrderService';
 
 const Router = express.Router();
 
-Router.get('/', UserHandler.isLoggedIn, OrderService.GetMyOrder);
+Router.get(
+  '/',
+  UserHandler.isLoggedIn,
+  OrderValidation.QueryValidation,
+  OrderService.GetOrder
+);
 
 Router.post(
   '/',
@@ -17,11 +22,4 @@ Router.post(
   OrderService.CreateOrder
 );
 
-Router.get(
-  '/book/:bookId',
-  UserHandler.isLoggedIn,
-  OrderValidation.BookRequestValid,
-  BookHandler.checkAuthor,
-  OrderService.GetOrderByBook
-);
 export default Router;

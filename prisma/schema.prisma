@@ -65,6 +65,7 @@ model Order {
   createdAt     DateTime @default(now())
 
   @@map("orders")
+  @@unique([userId,bookItemId])
 }
 
 model Comment {
