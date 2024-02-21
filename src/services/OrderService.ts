@@ -8,30 +8,13 @@ export const CreateOrder = async (
   next: NextFunction
 ) => {
   try {
-    const data: OrderRepository.ORDER = {
+    const data: OrderRepository.ORDER_CREATE = {
       userId: req.user!.id,
       bookId: req.body.bookId,
       bookItemId: req.body.bookItemId,
     };
     const response = await OrderRepository.create(data);
     if (!response) {
-      return res.send(resFormat.fail(400, '실패'));
-    }
-    return res.send(resFormat.successData(200, '성공', response));
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
-
-export const GetMyOrder = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const response = await OrderRepository.findByUserId(req.user!.id);
-    if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
     return res.status(200).send(resFormat.successData(200, '성공', response));
@@ -41,30 +24,21 @@ export const GetMyOrder = async (
   }
 };
 
-export const GetOrderByBook = async (
+export const GetOrder = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const response = await OrderRepository.findByBookId(req.body.bookId);
-    if (!response) {
-      return res.status(400).send(resFormat.fail(400, '실패'));
-    }
-    return res.status(200).send(resFormat.successData(200, '성공', response));
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
-
-export const GetOrderByBookItem = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const response = await OrderRepository.findByBookId(req.body.bookItemId);
+    const data: OrderRepository.ORDER = {
+      userId: req.query.userId
+        ? parseInt(req.query.userId as string, 10)
+        : undefined,
+      bookId: req.query.bookId
+        ? parseInt(req.query.bookId as string, 10)
+        : undefined,
+    };
+    const response = await OrderRepository.findByQuery(data);
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
