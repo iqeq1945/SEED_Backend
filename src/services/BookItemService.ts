@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import resFormat from '../utils/resFormat';
 import * as BookItemRepository from '../repositories/BookItemRepository';
+import * as RedisRepositoy from '../repositories/RedisRepository';
+import { redisCli } from '../config/redis';
 
 export const CreateItem = async (
   req: Request,
@@ -66,12 +68,35 @@ export const GetItem = async (
   next: NextFunction
 ) => {
   try {
+    const check = await RedisRepositoy.checkBookItem(
+      parseInt(req.params.id, 10)
+    );
+    if (check) {
+      const response = await RedisRepositoy.getBookItem(
+        parseInt(req.params.id, 10)
+      );
+      return res
+        .status(200)
+        .send(
+          resFormat.successData(200, 'Book Item 정보 가져오기 성공', response)
+        );
+    }
     const response = await BookItemRepository.findById(
       parseInt(req.params.id, 10)
     );
+
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
+
+    const redisCheck = await RedisRepositoy.setBookItem(
+      parseInt(req.params.id, 10),
+      JSON.stringify(response)
+    );
+    if (!redisCheck) {
+      console.log('redis 오류');
+    }
+
     return res
       .status(200)
       .send(
