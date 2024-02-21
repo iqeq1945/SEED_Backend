@@ -29,3 +29,12 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
     res.status(401).send(resFormat.fail(401, '권한이 없습니다.'));
   }
 };
+
+export const isMine = (req: Request, res: Response, next: NextFunction) => {
+  isLoggedIn(req, res, next);
+  if (req.user!.id === parseInt(req.query.userId as string, 10)) {
+    next();
+  } else {
+    res.status(401).send(resFormat.fail(401, '권한이 없습니다.'));
+  }
+};

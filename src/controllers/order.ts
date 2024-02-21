@@ -16,8 +16,8 @@ Router.get(
 
 Router.post(
   '/',
-  UserHandler.isLoggedIn,
   OrderValidation.OrderValidation,
+  UserHandler.isMine,
   BookItemHandler.checkBook,
   OrderService.CreateOrder
 );
