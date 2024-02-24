@@ -40,6 +40,11 @@ export const CreateRequestValid = async (
     .isString()
     .withMessage('string 형식이어야 합니다.')
     .run(req);
+  await check('open')
+    .if(body('open').exists())
+    .isISO8601({ strict: true })
+    .withMessage('iso8601 date 형식이여야합니다.')
+    .run(req);
   BookRequestValid(req, res, next);
 };
 
@@ -78,6 +83,11 @@ export const UpdateRequestValid = async (
     .if(body('title').exists())
     .isString()
     .withMessage('string 형식이어야 합니다.')
+    .run(req);
+  await check('open')
+    .if(body('open').exists())
+    .isISO8601({ strict: true })
+    .withMessage('iso8601 date 형식이여야합니다.')
     .run(req);
   DeleteRequestValid(req, res, next);
 };

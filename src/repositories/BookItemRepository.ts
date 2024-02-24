@@ -17,6 +17,7 @@ export interface BOOK_ITEM extends BOOK_ITEM_INIT {
   title: string;
   content: string;
   bookId: number;
+  open: Date | undefined;
 }
 
 export const findById = async (id: number) => {
@@ -56,7 +57,7 @@ export const update = async (id: number, data: BOOK_ITEM_UPDATE) => {
   }
 };
 
-export const open = async (id: number, open: boolean) => {
+export const open = async (id: number, open: Date) => {
   try {
     return await prisma.book_Item.update({
       where: { id: id },
