@@ -6,7 +6,8 @@ declare global {
       id: number;
       email: string;
       name: string;
-      status: boolean;
+      admin: boolean;
+      seed: number;
     }
     interface Request {
       user?: User;

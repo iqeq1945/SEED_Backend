@@ -72,3 +72,19 @@ export const findByQuery = async (data: ORDER) => {
     console.log(err);
   }
 };
+
+export const findByUserAndBookItem = async (
+  userId: number,
+  bookItemId: number
+) => {
+  try {
+    return prisma.order.findMany({
+      where: {
+        userId,
+        bookItemId,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
