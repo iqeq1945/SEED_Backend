@@ -4,6 +4,8 @@ import * as BookItemService from '../services/BookItemService';
 import * as BookHandler from '../middlewares/BookHandler';
 import * as BookItemHandler from '../middlewares/BookItemHandler';
 import * as UserHandler from '../middlewares/UserHandler';
+import * as OrderHandler from '../middlewares/OrderHandler';
+
 const Router = express.Router();
 
 // Book Item 생성
@@ -37,6 +39,14 @@ Router.patch(
 Router.get(
   '/:id',
   BookItemValidation.ReadRequestValid,
+  BookItemHandler.checkAuthor,
+  BookItemService.GetItem
+);
+
+Router.get(
+  '/view/:id',
+  BookItemValidation.ReadRequestValid,
+  OrderHandler.existOrder,
   BookItemService.GetItem
 );
 

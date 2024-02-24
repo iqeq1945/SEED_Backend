@@ -10,5 +10,6 @@ export default (req: Request, res: Response, next: NextFunction) => {
       .send(resFormat.failData(400, 'Request Data validation fail', error));
   } else {
     next();
+    return;
   }
 };

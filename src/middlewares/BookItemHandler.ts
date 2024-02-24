@@ -8,6 +8,7 @@ export const checkAuthor = async (
   next: NextFunction
 ) => {
   try {
+    if (req.user!.admin) return next();
     const id =
       req.body.bookItemId || req.body.id || parseInt(req.params.id, 10);
     const response = await BookItemRepository.findById(id);
@@ -38,13 +39,14 @@ export const checkBook = async (
     return res
       .status(400)
       .send(resFormat.fail(400, '존재하지 않는 book_item id입니다.'));
+  } else {
+    if (response.bookId != req.body.bookId) {
+      return res
+        .status(400)
+        .send(resFormat.fail(400, 'book 과 book_item의 관계가 맞지않습니다.'));
+    }
+    return next();
   }
-  if (response.bookId != req.body.bookId) {
-    return res
-      .status(400)
-      .send(resFormat.fail(400, 'book 과 book_item의 관계가 맞지않습니다.'));
-  }
-  next();
 };
 
 export const existBookItem = async (
@@ -62,6 +64,7 @@ export const existBookItem = async (
         .send(resFormat.fail(400, '존재하지 않는 book_item id입니다.'));
     }
     next();
+    return;
   } catch (err) {
     console.log(err);
     next(err);

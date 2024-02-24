@@ -1,6 +1,5 @@
 import express from 'express';
 import * as UserHandler from '../middlewares/UserHandler';
-import * as BookHandler from '../middlewares/BookHandler';
 import * as BookItemHandler from '../middlewares/BookItemHandler';
 import * as OrderValidation from '../validation/OrderValidation';
 import * as OrderService from '../services/OrderService';
@@ -17,7 +16,7 @@ Router.get(
 Router.post(
   '/',
   OrderValidation.OrderValidation,
-  UserHandler.isMine,
+  UserHandler.checkSeed,
   BookItemHandler.checkBook,
   OrderService.CreateOrder
 );

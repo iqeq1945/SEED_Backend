@@ -13,11 +13,15 @@ export const CreateOrder = async (
       bookId: req.body.bookId,
       bookItemId: req.body.bookItemId,
     };
+
     const response = await OrderRepository.create(data);
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
-    return res.status(200).send(resFormat.successData(200, '성공', response));
+
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '구매성공', response));
   } catch (err) {
     console.log(err);
     next(err);
