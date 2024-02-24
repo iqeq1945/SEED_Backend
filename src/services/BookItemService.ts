@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import resFormat from '../utils/resFormat';
 import * as BookItemRepository from '../repositories/BookItemRepository';
 import * as RedisRepositoy from '../repositories/RedisRepository';
-import { redisCli } from '../config/redis';
 
 export const CreateItem = async (
   req: Request,
