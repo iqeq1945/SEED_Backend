@@ -36,7 +36,7 @@ Router.delete(
 Router.post(
   '/keyword',
   UserHandler.isLoggedIn,
-  RedisValidation.KeywrodRequestValid,
+  RedisValidation.KeywordRequestValid,
   RedisService.SetKeyword
 );
 

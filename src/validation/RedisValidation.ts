@@ -17,7 +17,7 @@ export const LikeRequestValid = async (
   validationFunction(req, res, next);
 };
 
-export const KeywrodRequestValid = async (
+export const KeywordRequestValid = async (
   req: Request,
   res: Response,
   next: NextFunction
