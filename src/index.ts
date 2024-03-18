@@ -19,6 +19,7 @@ import BookItemController from './controllers/bookItem';
 import RedisController from './controllers/redis';
 import OrderController from './controllers/order';
 import CommentController from './controllers/comment';
+import schedule from 'node-schedule';
 
 dotenv.config();
 passportConfig(passport);
@@ -59,4 +60,7 @@ app.use('/comments', CommentController);
 
 app.listen(port, function () {
   console.log(`App is listening on port ${port} !`);
+  schedule.scheduleJob('0 15 16 * * *', function () {
+    console.log(new Date());
+  });
 });
