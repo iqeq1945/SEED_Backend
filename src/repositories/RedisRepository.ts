@@ -157,3 +157,45 @@ export const setBookItem = async (bookItemId: number, data: string) => {
     console.log(err);
   }
 };
+
+export const setNotification = async (userId: number, data: any) => {
+  try {
+    console.log(userId, data);
+    for (let i = 0; i < data.length; i++) {
+      await redisCli.zAdd(`notification:${userId}`, [
+        { score: Date.now(), value: data, EX: 10 },
+      ]);
+    }
+    return true;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getNotification = async (userId: number) => {
+  try {
+    return await redisCli.sendCommand([
+      'ZREVRANGE',
+      `notification:${userId}`,
+      '0',
+      '-1',
+    ]);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const delNotification = async (userId: number) => {
+  try {
+    const now = Date.now();
+    //const last =new Date(now.setDate)
+    return await redisCli.sendCommand([
+      'remrangebyscore',
+      `notification:${userId}`,
+      '-inf',
+      now,
+    ]);
+  } catch (err) {
+    console.log(err);
+  }
+};

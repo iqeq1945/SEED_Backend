@@ -68,4 +68,5 @@ Router.get(
   RedisService.GetView
 );
 
+Router.post('/notification', RedisService.SetNotification);
 export default Router;

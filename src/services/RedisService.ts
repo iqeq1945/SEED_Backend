@@ -200,3 +200,23 @@ export const GetView = async (
     next(err);
   }
 };
+
+export const SetNotification = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.setNotification(
+      req.body.userId,
+      req.body.data
+    );
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res.status(200).send(resFormat.success(200, '알림 설정 성공'));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
