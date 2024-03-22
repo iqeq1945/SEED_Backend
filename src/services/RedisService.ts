@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import * as RedisRepository from '../repositories/RedisRepository';
 import resFormat from '../utils/resFormat';
+import * as UserRepository from '../repositories/UserRepository';
+import * as Mail from '../utils/mail';
 
 export const SetLike = async (
   req: Request,
@@ -201,20 +203,51 @@ export const GetView = async (
   }
 };
 
-export const SetNotification = async (
+export const setSignup = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const response = await RedisRepository.setNotification(
-      req.body.userId,
-      req.body.data
-    );
+    const check = await UserRepository.findByEmail(req.body.email);
+    if (check) {
+      return res
+        .status(400)
+        .send(resFormat.fail(400, '이미존재하는 계정입니다.'));
+    }
+    const response = await RedisRepository.setSignup(req.body.email);
     if (!response) {
       return res.status(400).send(resFormat.fail(400, '실패'));
     }
-    return res.status(200).send(resFormat.success(200, '알림 설정 성공'));
+
+    const data = {
+      to: req.body.email,
+      subject: '인증번호 발송입니다.',
+      html: `<h2>${response}</h2>`,
+    };
+    const result = await Mail.sendMail(data);
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '인증번호 가져오기 성공', response));
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+export const getSignup = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const response = await RedisRepository.getSignup(req.params.email);
+    if (!response) {
+      return res.status(400).send(resFormat.fail(400, '실패'));
+    }
+    return res
+      .status(200)
+      .send(resFormat.successData(200, '확인 성공', response));
   } catch (err) {
     console.log(err);
     next(err);

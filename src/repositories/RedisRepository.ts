@@ -158,43 +158,25 @@ export const setBookItem = async (bookItemId: number, data: string) => {
   }
 };
 
-export const setNotification = async (userId: number, data: any) => {
+export const setSignup = async (email: string) => {
   try {
-    console.log(userId, data);
-    for (let i = 0; i < data.length; i++) {
-      await redisCli.zAdd(`notification:${userId}`, [
-        { score: Date.now(), value: data, EX: 10 },
-      ]);
-    }
-    return true;
+    const random = String(Math.floor(Math.random() * 100000)).padStart(6, '0');
+    const response = await redisCli.sendCommand([
+      'SETEX',
+      `signup:${email}`,
+      '180',
+      random,
+    ]);
+    return response ? random : undefined;
   } catch (err) {
     console.log(err);
   }
 };
 
-export const getNotification = async (userId: number) => {
+export const getSignup = async (email: string) => {
   try {
-    return await redisCli.sendCommand([
-      'ZREVRANGE',
-      `notification:${userId}`,
-      '0',
-      '-1',
-    ]);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const delNotification = async (userId: number) => {
-  try {
-    const now = Date.now();
-    //const last =new Date(now.setDate)
-    return await redisCli.sendCommand([
-      'remrangebyscore',
-      `notification:${userId}`,
-      '-inf',
-      now,
-    ]);
+    const response = await redisCli.sendCommand(['GET', `signup:${email}`]);
+    return response ? true : false;
   } catch (err) {
     console.log(err);
   }

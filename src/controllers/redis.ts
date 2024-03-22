@@ -68,5 +68,18 @@ Router.get(
   RedisService.GetView
 );
 
-Router.post('/notification', RedisService.SetNotification);
+// 인증번호생성
+Router.post(
+  '/signup',
+  RedisValidation.SignUpRequestValid,
+  RedisService.setSignup
+);
+
+// 인증 번호 확인
+Router.get(
+  '/signup/:email',
+  RedisValidation.SignUpRequestValid,
+  RedisService.getSignup
+);
+
 export default Router;

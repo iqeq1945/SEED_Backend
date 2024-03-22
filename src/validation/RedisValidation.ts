@@ -61,3 +61,18 @@ export const ViewRequestValid = async (
 };
 
 export const GetViewRequestValid = LikeRequestValid;
+
+export const SignUpRequestValid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  await check('email')
+    .exists()
+    .withMessage('email 없습니다.')
+    .bail()
+    .isEmail()
+    .withMessage('email 형식이어야 합니다.')
+    .run(req);
+  validationFunction(req, res, next);
+};

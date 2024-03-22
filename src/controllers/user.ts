@@ -3,8 +3,6 @@ import * as UserService from '../services/UserService';
 import * as UserRepository from '../repositories/UserRepository';
 import * as UserValidation from '../validation/UserValidation';
 import * as UserHandler from '../middlewares/UserHandler';
-import * as Mail from '../config/nodemailer';
-import { request } from 'http';
 
 const Router = express.Router();
 
@@ -44,8 +42,5 @@ Router.patch(
 Router.get('/', UserHandler.isLoggedIn, (req: Request, res: Response) => {
   return res.status(200).send(req.user);
 });
-
-// email 보내기
-Router.get('/get/mail', Mail.sendMail);
 
 export default Router;
