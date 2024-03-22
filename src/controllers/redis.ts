@@ -36,7 +36,7 @@ Router.delete(
 Router.post(
   '/keyword',
   UserHandler.isLoggedIn,
-  RedisValidation.KeywrodRequestValid,
+  RedisValidation.KeywordRequestValid,
   RedisService.SetKeyword
 );
 
@@ -66,6 +66,20 @@ Router.get(
   RedisValidation.GetViewRequestValid,
   BookHandler.existBook,
   RedisService.GetView
+);
+
+// 인증번호생성
+Router.post(
+  '/signup',
+  RedisValidation.SignUpRequestValid,
+  RedisService.setSignup
+);
+
+// 인증 번호 확인
+Router.get(
+  '/signup/:email',
+  RedisValidation.SignUpRequestValid,
+  RedisService.getSignup
 );
 
 export default Router;

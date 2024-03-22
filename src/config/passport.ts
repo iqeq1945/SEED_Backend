@@ -12,7 +12,7 @@ const LocalStrategy = passportLocal.Strategy;
 
 export default (passport: passport.PassportStatic) => {
   passport.serializeUser((user: any, done: any) => {
-    console.log('serialize');
+    //console.log('serialize');
     done(null, user.id);
   });
   passport.deserializeUser(async (id: number, done: any) => {

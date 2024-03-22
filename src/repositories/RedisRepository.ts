@@ -157,3 +157,27 @@ export const setBookItem = async (bookItemId: number, data: string) => {
     console.log(err);
   }
 };
+
+export const setSignup = async (email: string) => {
+  try {
+    const random = String(Math.floor(Math.random() * 100000)).padStart(6, '0');
+    const response = await redisCli.sendCommand([
+      'SETEX',
+      `signup:${email}`,
+      '180',
+      random,
+    ]);
+    return response ? random : undefined;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSignup = async (email: string) => {
+  try {
+    const response = await redisCli.sendCommand(['GET', `signup:${email}`]);
+    return response ? true : false;
+  } catch (err) {
+    console.log(err);
+  }
+};
