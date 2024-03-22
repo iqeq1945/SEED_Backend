@@ -105,5 +105,5 @@ export const OpenRequestValid = async (
     .isBoolean()
     .withMessage('boolean 형식이어야 합니다.')
     .run(req);
-  DeleteRequestValid;
+  DeleteRequestValid(req, res, next);
 };
